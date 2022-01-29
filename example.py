@@ -94,9 +94,9 @@ def main():
     logger = start_logger()
     logger.info("Starting...")
 
-    url = ""
-    username = ""
-    password = ""
+    url = "" #CHANGE ME
+    username = "" #CHANGE ME
+    password = "" #CHANGE ME
     headless_browser = True
 
     holidays = (
