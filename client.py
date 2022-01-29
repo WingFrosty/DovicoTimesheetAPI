@@ -6,7 +6,7 @@ import time
 #Other modules to import
 from modules.utils_retry import retry
 import modules.utils_logger as utils_logger
-from timesheet import Timesheet
+from modules.timesheet import Timesheet
 
 #Program
 program_path = sys.argv[0]
