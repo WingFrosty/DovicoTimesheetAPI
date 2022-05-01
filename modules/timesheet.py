@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 max_tries = 10 #10 #Maximum number os tries a function can be executed when an exception occurs
 wait_interval_seconds = 1 #Waiting interval between each retry in seconds (currently: 1 second)
 default_timeout = 2 #timeout for elements
-sleep_time = 0.1 #time.sleep
+sleep_time = 5 #time.sleep
 
 class Timesheet:
     def __init__(self, url, headless_browser=False):
