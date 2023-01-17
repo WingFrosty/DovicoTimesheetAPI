@@ -227,7 +227,7 @@ class DovicoTimesheet:
             options.headless = self.get_headless_browser()
 
             driver = webdriver.Firefox(
-                service=FirefoxService(self.get_webdriver_path()),
+                service=FirefoxService(self.get_webdriver_path(), log_path=self.get_webdriver_log()),
                 options=options
             )
         elif self.get_browser_type() == INTERNET_EXPLORER:
@@ -248,8 +248,7 @@ class DovicoTimesheet:
 
             driver = webdriver.Safari(
                 service=SafariService(self.get_webdriver_path()),
-                options=options,
-                service_log_path=self.get_webdriver_log()
+                options=options
             )
         else:
             raise Exception("Unsupported Browser")
