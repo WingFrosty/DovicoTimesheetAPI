@@ -1,3 +1,5 @@
+webdrivers/
+logs/
 update_timesheet.py
 
 # Byte-compiled / optimized / DLL files
