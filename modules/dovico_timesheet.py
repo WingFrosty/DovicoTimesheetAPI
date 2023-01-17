@@ -27,9 +27,9 @@ INTERNET_EXPLORER = 3 #Untested
 SAFARI = 4 #Untested
 
 #Retries/Timeout
-default_timeout = 10 #timeout for elements
-max_tries = 100 #Maximum number os tries a function can be executed when an exception occurs
-wait_interval_seconds = 0.1 #Waiting interval between each retry in seconds (currently: 5 minutes)
+default_timeout = 2 #timeout for elements
+max_tries = 5 #Maximum number os tries a function can be executed when an exception occurs
+wait_interval_seconds = 1 #Waiting interval between each retry in seconds (currently: 5 minutes)
 
 class DovicoTimesheet:
     def __init__(self, url, browser_type, browser_path, webdriver_path, webdriver_log, headless_browser=False):
@@ -134,15 +134,16 @@ class DovicoTimesheet:
 
         logger.info("Hours added.")
 
+    @retry(max_tries=max_tries, wait_interval_seconds=wait_interval_seconds)
     def submit(self, start_date, end_date):
         logger.info("Submitting days between %s and %s...", start_date, end_date)
-        ##time.sleep(sleep_time)
+        #time.sleep(2)
         original_window = self.__get_driver().current_window_handle
         self.__launch_submit_window()
-        ##time.sleep(sleep_time)
+        #time.sleep(2)
         self.__change_to_submit_window(original_window)
         self.__change_submit_dates(start_date, end_date)
-        ##time.sleep(sleep_time)
+        #time.sleep(2)
         self.__click_submit()
 
         logger.info("Hours submited.")
@@ -526,20 +527,15 @@ class DovicoTimesheet:
         #time.sleep(sleep_time)
 
     def __change_to_submit_window(self, original_window):
-        try:
-            wait = WebDriverWait(self.__get_driver(), timeout=default_timeout)
-            wait.until(EC.number_of_windows_to_be(2))
+        wait = WebDriverWait(self.__get_driver(), timeout=default_timeout)
+        wait.until(EC.number_of_windows_to_be(2))
 
-            for window_handle in self.__get_driver().window_handles:
-                if window_handle != original_window:
-                    self.__get_driver().switch_to.window(window_handle)
-                    break
+        for window_handle in self.__get_driver().window_handles:
+            if window_handle != original_window:
+                self.__get_driver().switch_to.window(window_handle)
+                break
 
-            wait.until(EC.title_is("Submit"))
-
-        except TimeoutException:
-            self.__launch_submit_window()
-            raise
+        wait.until(EC.title_is("Submit"))
 
     def __change_submit_dates(self, start_date, end_date):
         start_date_formatted = str(start_date.month) + "/" + str(start_date.day) + "/" + str(start_date.year)
